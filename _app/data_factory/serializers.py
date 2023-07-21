@@ -1,45 +1,9 @@
 from rest_framework import serializers
-from .models import (
-    Education,
-    Expertise,
-    Language,
-    Service,
-    SoftSkill,
-    Experience,
-)
+from .models import Translation
 
 
-class SoftSkillSerializer(serializers.ModelSerializer):
+class TranslationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = SoftSkill
-        fields = "__all__"
-
-
-class LanguageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Language
-        fields = "__all__"
-
-
-class ExperienceSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Experience
-        fields = "__all__"
-
-
-class EducationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Education
-        fields = "__all__"
-
-
-class ServiceSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Service
-        fields = "__all__"
-
-
-class ExpertiseSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Expertise
-        fields = "__all__"
+        model = Translation
+        fields = ['user', 'query', 'result']
+        read_only_fields = ['result']

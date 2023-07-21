@@ -1,40 +1,30 @@
 from rest_framework import viewsets
 from .serializers import (
-    SoftSkillSerializer,
-    ExperienceSerializer,
-    EducationSerializer,
-    ExpertiseSerializer,
-    LanguageSerializer,
-    ServiceSerializer,
+    TranslationSerializer,
 )
-from .models import Education, Expertise, Service, SoftSkill, Experience, Language
+from .models import Translation
+import os
+import openai
+
+openai.api_key = "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"
 
 
-class SoftSkillViewSet(viewsets.ModelViewSet):
-    queryset = SoftSkill.objects.all()
-    serializer_class = SoftSkillSerializer
+class TranslationViewSet(viewsets.ModelViewSet):
+    queryset = Translation.objects.all()
+    serializer_class = TranslationSerializer
 
+    def perform_create(self, serializer):
+        response = openai.Completion.create(
+            engine="text-davinci-002",
+            prompt=f'Translate the following English text to French: "{self.request.data["query"]}"',
+            max_tokens=60,
+        )
+        res = response.choices[0].text.strip()
+        print(f'Translation : {res}')
 
-class LanguageViewSet(viewsets.ModelViewSet):
-    queryset = Language.objects.all()
-    serializer_class = LanguageSerializer
+        return serializer.save(
+            query=self.request.data["query"], result=res, user=self.request.user
+        )
 
-
-class ExperienceViewSet(viewsets.ModelViewSet):
-    queryset = Experience.objects.all()
-    serializer_class = ExperienceSerializer
-
-
-class EducationViewSet(viewsets.ModelViewSet):
-    queryset = Education.objects.all()
-    serializer_class = EducationSerializer
-
-
-class ServiceViewSet(viewsets.ModelViewSet):
-    queryset = Service.objects.all()
-    serializer_class = ServiceSerializer
-
-
-class ExpertiseViewSet(viewsets.ModelViewSet):
-    queryset = Expertise.objects.all()
-    serializer_class = ExpertiseSerializer
+    def get_queryset(self):
+        return Translation.objects.filter(user=self.request.user)

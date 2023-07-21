@@ -29,8 +29,15 @@ SECRET_KEY = os.getenv(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", default=True)
 
-ALLOWED_HOSTS = ["localhost", "0.0.0.0", "portfolio-backend-orcin.vercel.app"]
-CSRF_TRSUTED_ORIGINS = ["http://localhost", "0.0.0.0", "portfolio-backend-orcin.vercel.app"]
+ALLOWED_HOSTS = ["*"]
+
+CSRF_TRSUTED_ORIGINS = [
+    "http://localhost:7000",
+]
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+
 
 PROD_HOST_NAME = os.getenv("PROD_HOST_NAME", None)
 if PROD_HOST_NAME:
@@ -50,11 +57,13 @@ INSTALLED_APPS = [
     # "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
     #
+    "corsheaders",
     "data_factory",
     "rest_framework",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -138,7 +147,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles_build", "static")
 STATIC_URL = "static/"
 STATIC_FILE_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
