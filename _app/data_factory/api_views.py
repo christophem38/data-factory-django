@@ -6,8 +6,6 @@ from .models import Translation
 import os
 import openai
 
-openai.api_key = "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"
-
 
 class TranslationViewSet(viewsets.ModelViewSet):
     queryset = Translation.objects.all()
