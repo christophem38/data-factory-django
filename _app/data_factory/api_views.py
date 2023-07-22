@@ -4,7 +4,13 @@ from .serializers import (
 )
 from .models import Translation
 import os
+from dotenv import load_dotenv
 import openai
+
+load_dotenv()
+
+openai.api_key = os.getenv('OPENAI_API_KEY')
+print(os.getenv('OPENAI_API_KEY'))
 
 
 class TranslationViewSet(viewsets.ModelViewSet):

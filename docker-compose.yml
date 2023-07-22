@@ -38,6 +38,9 @@ services:
       - DJANGO_SECRET_KEY
       - POSTGRES_USER
       - POSTGRES_PASSWORD
+      - POSTGRES_NAME
+      - OPENAI_API_KEY
+      - REDIS
 
 volumes:
   database_volume:
