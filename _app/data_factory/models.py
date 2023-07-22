@@ -7,3 +7,4 @@ class Translation(models.Model):
     user = ForeignKey(User, on_delete=models.CASCADE)
     query = models.TextField()
     result = models.TextField()
+    to = models.CharField(max_length=10)
